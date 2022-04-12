@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CD Orders</title>
+
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="/javascripts/main.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/index.css" >
+</head>
+
+<body>
+
+<h2> CD Orders</h2>
+ 
+<input type="button" value="Click to refresh movie list from server" id="buttonGet"  />
+  
+<div >
+  <h2>Create a new CD Order</h2>
+  Store ID <br />
+  <input type="text" value="" id="StoreID" /> <br />
+  SalesPerson ID <br />
+  <input type="text" value="" id="SalesID" /> <br />
+  CD ID <br />
+  <input type="text" value="" id="cdID" /> <br />
+  Price Paid <br />
+  <input type="text" value="" id="pricepaid" /> <br />
+  Date <br />
+  <input type="text" value="" id="date" /> <br />
+  
+<br />
+<br />
+  
+  <input type="button" value="Generate an Order" id="buttonCreate" />
+  <input type="button" value="Submit One Order" id="buttonSubmitOne" />
+  <input type="button" value="Submit 500 Orders" id="buttonSubmit500" />
+</div>
+<br />
+<br />
+<br />
+
+<h2>My CD List</h2>>
+<div id="divOrderList"></div>
+<br />
+
+ 
+</body>
+
+</html>
