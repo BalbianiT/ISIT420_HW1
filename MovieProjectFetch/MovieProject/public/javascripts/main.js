@@ -1,8 +1,8 @@
 
 let CDArray = [];
 
-const storeIDArray = ["98053", "98007", "98077", "98055", "98011", "98046"];
-const cdIDArray = ["123456", "123654", "321456", "321654", "654123", "654321", "543216", "354126", "621453", "623451"]
+const storeIDArray = ['98053', '98007', '98077', '98055', '98011', '98046'];
+const cdIDArray = ['123456', '123654', '321456', '321654', '654123', '654321', '543216', '354126', '621453', '623451']
 
 let OrderObject = function (pStoreID, pSalesPersonID, pCdID, pPricePaid, pDate) {
     this.StoreID = pStoreID;
@@ -60,20 +60,20 @@ function CreateOneOrder(){
     let pricePaid = Math.floor(Math.random() * 11) + 5;
     let randomTimeValue = GetTimeString();
 
-    document.getElementById("StoreID").value = randomStoreID;
-    document.getElementById("SalesID").value = salesPersonID;
+    document.getElementById("storeID").value = randomStoreID;
+    document.getElementById("salesPersonID").value = salesPersonID;
     document.getElementById("cdID").value = cdID;
-    document.getElementById("pricepaid").value = pricePaid;
+    document.getElementById("pricePaid").value = pricePaid;
     document.getElementById("date").value = randomTimeValue;
 }
 
 function PostOneOrder(){
     CreateOneOrder();
     let newOrder = new OrderObject(
-        document.getElementById("StoreID").value,
-        document.getElementById("SalesID").value,
+        document.getElementById("storeID").value,
+        document.getElementById("salesPersonID").value,
         document.getElementById("cdID").value,
-        document.getElementById("pricepaid").value,
+        document.getElementById("pricePaid").value,
         document.getElementById("date").value,  
     );
 
@@ -91,10 +91,10 @@ function PostOneOrder(){
 function WriteOneOrder(){
     CreateOneOrder();
     let newOrder = new OrderObject(
-        document.getElementById("StoreID").value,
-        document.getElementById("SalesID").value,
+        document.getElementById("storeID").value,
+        document.getElementById("salesPersonID").value,
         document.getElementById("cdID").value,
-        document.getElementById("pricepaid").value,
+        document.getElementById("pricePaid").value,
         document.getElementById("date").value,  
     );
 
@@ -121,7 +121,7 @@ function createList() {
 
 function fillUL(data) {
         // clear prior data
-    var divOrderList = document.getElementById("divOrderList");
+    var divOrderList = document.getElementById("divCDList");
     while (divOrderList.firstChild) {    // remove any old data so don't get duplicates
         divOrderList.removeChild(divOrderList.firstChild);
     };
@@ -131,9 +131,9 @@ function fillUL(data) {
     CDArray.forEach(function (element,) {   // use handy array forEach method
         var li = document.createElement('li');
         li.innerHTML = element.StoreID + ":  &nbsp &nbsp  &nbsp &nbsp " + 
-        element.SalesPersonID + "  &nbsp &nbsp  &nbsp &nbsp "  
+        element.SalesPersonID + "  &nbsp &nbsp  &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp"  
         + element.CdID + " &nbsp &nbsp  &nbsp &nbsp  " 
-        + element.PricePaid + " &nbsp &nbsp  &nbsp &nbsp  "
+        + element.PricePaid + " &nbsp &nbsp  &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp "
         + element.Date
         ul.appendChild(li);
     });

@@ -54,7 +54,6 @@ router.post('/ShowOneOrder', function(req, res) {
 /* Save one order to file */
 router.post('/StoreOneOrder', function(req, res) {
   const newOrder = req.body;  // get the object from the req object sent from browser
-  console.log(newOrder);
   ServerOrderArray.push(newOrder);
   fileManager.write();
   // prepare a reply to the browser
