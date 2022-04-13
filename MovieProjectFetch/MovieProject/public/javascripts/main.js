@@ -4,7 +4,7 @@ let CDArray = [];
 const storeIDArray = ['98053', '98007', '98077', '98055', '98011', '98046'];
 const cdIDArray = ['123456', '123654', '321456', '321654', '654123', '654321', '543216', '354126', '621453', '623451']
 
-let OrderObject = function (pStoreID, pSalesPersonID, pCdID, pPricePaid, pDate) {
+let orderObject = function (pStoreID, pSalesPersonID, pCdID, pPricePaid, pDate) {
     this.StoreID = pStoreID;
     this.SalesPersonID = pSalesPersonID;
     this.CdID = pCdID;
@@ -69,18 +69,18 @@ function CreateOneOrder(){
 
 function PostOneOrder(){
     CreateOneOrder();
-    let newOrder = new OrderObject(
+    let newOrder = new orderObject(
         document.getElementById("storeID").value,
         document.getElementById("salesPersonID").value,
         document.getElementById("cdID").value,
         document.getElementById("pricePaid").value,
-        document.getElementById("date").value,  
+        document.getElementById("date").value 
     );
 
     fetch('/ShowOneOrder', {
         method: "POST",
         body: JSON.stringify(newOrder),
-        headers: {"Content-type": "application/json: charset=UTF-8"}
+        headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         .then(response => response.json())
         .then(json => console.log(json))
@@ -90,22 +90,23 @@ function PostOneOrder(){
 
 function WriteOneOrder(){
     CreateOneOrder();
-    let newOrder = new OrderObject(
+    let newOrder = new orderObject(
         document.getElementById("storeID").value,
         document.getElementById("salesPersonID").value,
         document.getElementById("cdID").value,
         document.getElementById("pricePaid").value,
-        document.getElementById("date").value,  
+        document.getElementById("date").value  
     );
 
     fetch('/StoreOneOrder', {
         method: "POST",
         body: JSON.stringify(newOrder),
-        headers: {"Content-type": "application/json: charset=UTF-8"}
+        headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         .then(response => response.json())
         .then(json => console.log(json))
         .catch(err => console.log(err));
+
 
 };
 

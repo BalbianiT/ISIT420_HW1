@@ -14,8 +14,7 @@ fileManager  = {
   // NOTE: both read and write files are synchonous, we really can't do anything
   // useful until they are done.  If they were async, we would have to use call backs.
   // functions really should take in the name of a file to be more generally useful
-  read: function() {
-    // has extra code to add 4 movies if and only if the file is empty
+  read: function() { 
     const stat = fs.statSync('OrdersFiles.json');
     if (stat.size !== 0) {                           
     var rawdata = fs.readFileSync('OrdersFiles.json'); // read disk file
@@ -28,7 +27,7 @@ fileManager  = {
   
   write: function() {
     let data = JSON.stringify(ServerOrderArray);    // take our object data and make it writeable
-    fs.writeFileSync('OrdersFile.json', data);  // write it
+    fs.writeFileSync('OrdersFiles.json', data);  // write it
   },
 }
 
@@ -68,7 +67,7 @@ router.post('/StoreOneOrder', function(req, res) {
 router.get('/getAllCDs', function(req,res) {
   fileManager.read();
   res.status(200).json(ServerOrderArray);
-})
+});
 
 
 
