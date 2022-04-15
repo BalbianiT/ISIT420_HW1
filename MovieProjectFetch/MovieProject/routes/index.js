@@ -7,29 +7,33 @@ var fs = require("fs");
 let ServerOrderArray = [];
 
 
-// my file management code, embedded in an object
-fileManager  = {
+const mongoose = require("mongoose");
 
-  // this will read a file and put the data in our movie array
-  // NOTE: both read and write files are synchonous, we really can't do anything
-  // useful until they are done.  If they were async, we would have to use call backs.
-  // functions really should take in the name of a file to be more generally useful
-  read: function() { 
-    const stat = fs.statSync('OrdersFiles.json');
-    if (stat.size !== 0) {                           
-    var rawdata = fs.readFileSync('OrdersFiles.json'); // read disk file
-    ServerOrderArray = JSON.parse(rawdata);  // turn the file data into JSON format and overwrite our array
+const OrderSchema = require("../orderSchema");
+
+
+// edited to include my non-admin, user level account and PW on mongo atlas
+// and also to include the name of the mongo DB that the collection is in (MoviesDB)
+const dbURI =
+    "mongodb+srv://ISIT420:isitpassword420@teresa-cluster.45mkj.mongodb.net/Orders?retryWrites=true&w=majority";
+
+// Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
+// by default, you need to set it to false.
+mongoose.set('useFindAndModify', false);
+
+const options = {
+    reconnectTries: Number.MAX_VALUE,
+    poolSize: 10
+};
+
+mongoose.connect(dbURI, options).then(
+    () => {
+        console.log("Database connection established!");
+    },
+    err => {
+        console.log("Error connecting Database instance due to: ", err);
     }
-    else {
-      console.log("empty file");
-    }
-  },
-  
-  write: function() {
-    let data = JSON.stringify(ServerOrderArray);    // take our object data and make it writeable
-    fs.writeFileSync('OrdersFiles.json', data);  // write it
-  },
-}
+);
 
 
 /* GET home page. */
@@ -51,22 +55,38 @@ router.post('/ShowOneOrder', function(req, res) {
 });
 
 /* Save one order to file */
-router.post('/StoreOneOrder', function(req, res) {
-  const newOrder = req.body;  // get the object from the req object sent from browser
-  ServerOrderArray.push(newOrder);
-  fileManager.write();
-  // prepare a reply to the browser
-  var response = {
-    status  : 200,
-    success : 'Added Successfully'
-  }
-  res.end(JSON.stringify(response)); // send reply
+router.post('/StoreOneOrder', function (req, res) {
+
+    let oneNewCD = new OrderSchema(req.body);
+    console.log(req.body);
+    oneNewCD.save((err, todo) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            // console.log(todo);
+            // res.status(201).json(todo);
+
+            var response = {
+                status: 200,
+                success: 'Added Successfully'
+            }
+            res.end(JSON.stringify(response)); // send reply
+
+        }
+    });
 });
 
-//Get all CD data
-router.get('/getAllCDs', function(req,res) {
-  fileManager.read();
-  res.status(200).json(ServerOrderArray);
+// GET all CD data 
+router.get('/getAllCDs', function (req, res) {
+    // find {  takes values, but leaving it blank gets all}
+    OrderSchema.find({}, (err, AllCDs) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+        res.status(200).json(AllCDs);
+    });
 });
 
 
