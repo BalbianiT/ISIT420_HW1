@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
         createList15();
     });
 
+    document.getElementById("buttonFiveEmpMostVol").addEventListener("click", function () {
+        createFiveEmpMostVolList();
+    });
+
 });  
 // end of wait until document has loaded event  *************************************************************************
 
@@ -133,6 +137,15 @@ function createList15() {
         .catch(err => console.log('Request Failed', err)); // Catch errors
 };
 
+function createFiveEmpMostVolList() {
+    // update local array from server
+    fetch('/getFiveEmpMostVolList')
+        // Handle success
+        .then(response => response.json())  // get the data out of the response object
+        .then(responseData => fillULFiveMostVol(responseData))    //update our array and li's
+        .catch(err => console.log('Request Failed', err)); // Catch errors
+};
+
 function fillUL(data) {
         // clear prior data
     var divOrderList = document.getElementById("divCDList");
@@ -197,6 +210,106 @@ function fillUL15(data) {
         + "<br/>Store 98055: &nbsp " + Store98055
         + "<br/>Store 98011: &nbsp " + Store98011
         + "<br/>Store 98046: &nbsp " + Store98046;
+}
+
+function fillULFiveMostVol(data) {
+    // clear prior data
+    var divOrderList = document.getElementById("divCDList");
+    while (divOrderList.firstChild) {    // remove any old data so don't get duplicates
+        divOrderList.removeChild(divOrderList.firstChild);
+    };
+
+    var ul = document.createElement('ul');
+    CDArray = data;
+
+    let emplID1 = 0;
+    let emplID2 = 0;
+    let emplID3 = 0;
+    let emplID4 = 0;
+    let emplID5 = 0;
+    let emplID6 = 0;
+    let emplID7 = 0;
+    let emplID8 = 0;
+    let emplID9 = 0;
+    let emplID10 = 0;
+    let emplID11 = 0;
+    let emplID12 = 0;
+    let emplID13 = 0;
+    let emplID14 = 0;
+    let emplID15 = 0;
+    let emplID16 = 0;
+    let emplID17 = 0;
+    let emplID18 = 0;
+    let emplID19 = 0;
+    let emplID20 = 0;
+    let emplID21 = 0;
+    let emplID22 = 0;
+    let emplID23 = 0;
+    let emplID24 = 0;
+
+    CDArray.forEach(element => {
+        if (element.SalesPersonID == 1) {
+            emplID1++;
+        } else if (element.SalesPersonID == 2) {
+            emplID2++;
+        } else if (element.SalesPersonID == 3) {
+            emplID3++;
+        } else if (element.SalesPersonID == 4) {
+            emplID4++;
+        } else if (element.SalesPersonID == 5) {
+            emplID5++;
+        } else if (element.SalesPersonID == 6) {
+            emplID6++;
+        } else if (element.SalesPersonID == 7) {
+            emplID7++;
+        } else if (element.SalesPersonID == 8) {
+            emplID8++;
+        } else if (element.SalesPersonID == 9) {
+            emplID9++;
+        } else if (element.SalesPersonID == 10) {
+            emplID10++;
+        } else if (element.SalesPersonID == 11) {
+            emplID11++;
+        } else if (element.SalesPersonID == 12) {
+            emplID12++;
+        } else if (element.SalesPersonID == 13) {
+            emplID13++;
+        } else if (element.SalesPersonID == 14) {
+            emplID14++;
+        } else if (element.SalesPersonID == 15) {
+            emplID15++;
+        } else if (element.SalesPersonID == 16) {
+            emplID16++;
+        } else if (element.SalesPersonID == 17) {
+            emplID17++;
+        } else if (element.SalesPersonID == 18) {
+            emplID18++;
+        } else if (element.SalesPersonID == 19) {
+            emplID19++;
+        } else if (element.SalesPersonID == 20) {
+            emplID20++;
+        } else if (element.SalesPersonID == 21) {
+            emplID21++;
+        } else if (element.SalesPersonID == 22) {
+            emplID22++;
+        } else if (element.SalesPersonID == 23) {
+            emplID23++;
+        } else if (element.SalesPersonID == 24) {
+            emplID24++;
+        }
+    });
+
+    var employeeList = [emplID1, emplID2, emplID3, emplID4, emplID5, emplID6, emplID7, emplID8, emplID9, emplID10, emplID11, emplID12, emplID13, emplID14, emplID15, emplID16, emplID17,
+        emplID18, emplID19, emplID20, emplID21, emplID22, emplID23, emplID24];
+    employeeList.sort().reverse();
+
+    document.getElementById("textString").innerHTML = "The number of sales by the top 5 associates made in the past 4 days are:"
+        + "<br/> " + employeeList[0];
+    + "<br/> " + employeeList[1];
+    + "<br/> " + employeeList[2];
+    + "<br/> " + employeeList[3];
+    + "<br/> " + employeeList[4];
+
 }
 
 

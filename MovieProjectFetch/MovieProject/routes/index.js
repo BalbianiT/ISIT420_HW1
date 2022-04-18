@@ -104,5 +104,48 @@ router.get('/getAll15', function (req, res) {
     });
 });
 
+// GET the five employees who sold the most volume over the past four days 
+
+router.get('/getFiveEmpMostVolList', function (req, res) {
+
+    let date1 = "2022-04-17T01:37:04.072Z";
+    let date2 = "2022-04-20T23:18:05.392Z";
+
+
+    OrderSchema.find({ Date: { $gt: date1, $lt: date2 } })
+        .sort({ SalesPersonID: -1 })
+        .exec(function (err, FiveEmpMostVolList) {
+
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            }
+            console.log(FiveEmpMostVolList);
+            res.status(200).json(FiveEmpMostVolList);
+
+
+            /* I could not get this Mongoose query to work
+        
+            //let date1 = new Date();
+            //let date2 = date1 + 4;
+        
+            OrderSchema.find({ StoreID: {}, SalesPersonID: {}, CdID: {}, PricePaid: {}, Date: {}})
+            OrderSchema.aggregate([
+                {$match: {Date: { $gt: date2, $lt: date1 }}},
+                {$group: {_id: "$SalesPersonID", count:{$sum: 1}}}
+            ])
+            .sort('-count')
+            .exec(function (err, FiveEmpMostVolList) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            }
+            console.log(FiveEmpMostVolList);
+            res.status(200).json(FiveEmpMostVolList);
+            */
+
+        });
+});
+
 
 module.exports = router;
