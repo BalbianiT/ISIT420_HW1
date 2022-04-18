@@ -37,7 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             WriteOneOrder();
         }
-    }); 
+    });
+
+    document.getElementById("button15").addEventListener("click", function () {
+        createList15();
+    });
 
 });  
 // end of wait until document has loaded event  *************************************************************************
@@ -120,6 +124,15 @@ function createList() {
     .catch(err => console.log('Request Failed', err)); // Catch errors
 };
 
+function createList15() {
+    // update local array from server
+    fetch('/getAll15')
+        // Handle success
+        .then(response => response.json())  // get the data out of the response object
+        .then(responseData => fillUL15(responseData))    //update our array and li's
+        .catch(err => console.log('Request Failed', err)); // Catch errors
+};
+
 function fillUL(data) {
         // clear prior data
     var divOrderList = document.getElementById("divCDList");
@@ -139,6 +152,51 @@ function fillUL(data) {
         ul.appendChild(li);
     });
     divOrderList.appendChild(ul)
+}
+
+function fillUL15(data) {
+    // clear prior data
+    var divOrderList = document.getElementById("divCDList");
+    while (divOrderList.firstChild) {    // remove any old data so don't get duplicates
+        divOrderList.removeChild(divOrderList.firstChild);
+    };
+
+    let Store98053 = 0;
+    let Store98007 = 0;
+    let Store98077 = 0;
+    let Store98055 = 0;
+    let Store98011 = 0;
+    let Store98046 = 0;
+
+    CDArray = data;
+    CDArray.forEach(element => {
+        if (element.StoreID == "98053") {
+            Store98053++;
+        }
+        else if (element.StoreID == "98007") {
+            Store98007++;
+        }
+        else if (element.StoreID == "98077") {
+            Store98077++;
+        }
+        else if (element.StoreID == "98055") {
+            Store98055++;
+        }
+        else if (element.StoreID == "98011") {
+            Store98011++;
+        }
+        else {
+            Store98046++;
+        };
+    });
+
+    document.getElementById("textString").innerHTML = "The number of $15 CD's each store sold between April 17th and April 20th:</br>"
+        + "<br/>Store 98053: &nbsp " + Store98053
+        + "<br/>Store 98007: &nbsp " + Store98007
+        + "<br/>Store 98077: &nbsp " + Store98077
+        + "<br/>Store 98055: &nbsp " + Store98055
+        + "<br/>Store 98011: &nbsp " + Store98011
+        + "<br/>Store 98046: &nbsp " + Store98046;
 }
 
 

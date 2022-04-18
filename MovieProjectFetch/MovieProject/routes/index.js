@@ -89,6 +89,20 @@ router.get('/getAllCDs', function (req, res) {
     });
 });
 
+//Get Stores who sold $15 CD's April 17th through April 20th
+router.get('/getAll15', function (req, res) {
+    let value = "15";
+    let date1 = "2022-04-17T01:37:04.072Z";
+    let date2 = "2022-04-20T23:18:05.392Z";
+    OrderSchema.find({ PricePaid: value, Date: { $gt: date1, $lt: date2 } }).sort({ Year: -1 }).exec(function (err, All15) {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+        console.log(All15);
+        res.status(200).json(All15);
+    });
+});
 
 
 module.exports = router;
