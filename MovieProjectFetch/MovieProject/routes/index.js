@@ -14,8 +14,10 @@ const OrderSchema = require("../orderSchema");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection is in (MoviesDB)
-const dbURI =
-    "mongodb+srv://ISIT420:isitpassword420@teresa-cluster.45mkj.mongodb.net/Orders?retryWrites=true&w=majority";
+//const dbURI =
+//    "mongodb+srv://ISIT420:isitpassword420@teresa-cluster.45mkj.mongodb.net/Orders?retryWrites=true&w=majority";
+
+const dbURI = "mongodb+srv://exitvisa:Maythefourth@isit420.pk5eo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -92,9 +94,10 @@ router.get('/getAllCDs', function (req, res) {
 //Get Stores who sold $15 CD's April 17th through April 20th
 router.get('/getAll15', function (req, res) {
     let value = "15";
-    let date1 = "2022-04-17T01:37:04.072Z";
-    let date2 = "2022-04-20T23:18:05.392Z";
-    OrderSchema.find({ PricePaid: value, Date: { $gt: date1, $lt: date2 } }).sort({ Year: -1 }).exec(function (err, All15) {
+    let date1 = "2022-04-21T00:56:32.512Z";
+    let date2 = "2022-04-24T00:56:32.512Z";
+    OrderSchema.find({ PricePaid: value, TheDate: { $gt: date1, $lt: date2 } }).sort({ Year: -1 })
+    .exec(function (err, All15) {
         if (err) {
             console.log(err);
             res.status(500).send(err);
@@ -108,43 +111,24 @@ router.get('/getAll15', function (req, res) {
 
 router.get('/getFiveEmpMostVolList', function (req, res) {
 
-    let date1 = "2022-04-17T01:37:04.072Z";
-    let date2 = "2022-04-20T23:18:05.392Z";
+    OrderSchema.aggregate([
+//I create 500 orders, list them, and then cut and paste the first order time into the first date, and paste
+// into the 2nd data, but bump the day by one so it covers 24 hours
+        {$match: { TheDate: {"$gte": new Date("2022-04-21T00:56:32.512Z"), "$lt": new Date("2022-04-22T00:48:27.532Z") } } },
+        { $group : { _id: {SalesPersonID : '$SalesPersonID',}, TotalSales: {$sum: "$PricePaid"}}},
+        { $project : {SalesPersonID: '$_id.SalesPersonID', PricePaid: '$TotalSales', _id:0}},  // _id:0  Specifies the suppression of the _id field.
+        { $sort : {PricePaid : -1}},
+      ])
 
+      .exec(function (err, storeRanking) {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+      }
+      console.log(storeRanking);
+      res.status(200).json(storeRanking);
+      });
 
-    OrderSchema.find({ Date: { $gt: date1, $lt: date2 } })
-        .sort({ SalesPersonID: -1 })
-        .exec(function (err, FiveEmpMostVolList) {
-
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            }
-            console.log(FiveEmpMostVolList);
-            res.status(200).json(FiveEmpMostVolList);
-
-
-            /* I could not get this Mongoose query to work
-        
-            //let date1 = new Date();
-            //let date2 = date1 + 4;
-        
-            OrderSchema.find({ StoreID: {}, SalesPersonID: {}, CdID: {}, PricePaid: {}, Date: {}})
-            OrderSchema.aggregate([
-                {$match: {Date: { $gt: date2, $lt: date1 }}},
-                {$group: {_id: "$SalesPersonID", count:{$sum: 1}}}
-            ])
-            .sort('-count')
-            .exec(function (err, FiveEmpMostVolList) {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            }
-            console.log(FiveEmpMostVolList);
-            res.status(200).json(FiveEmpMostVolList);
-            */
-
-        });
 });
 
 
